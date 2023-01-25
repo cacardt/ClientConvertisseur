@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -28,14 +29,30 @@ namespace ClientConvertisseurV1.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ConvertisseurEuroPage : Page
+    public sealed partial class ConvertisseurEuroPage : Page, INotifyPropertyChanged
     {
+
+        private double euro;
+        public Devise DeviseSelected { get; set; }
+
+        public double Euro
+        {
+            get { return euro; }
+            set { euro = value; OnPropertyChanged("Euro"); }
+        }
+
+        private double result;
+        public double Result
+        {
+            get => result; set { result = value; OnPropertyChanged("Result"); }
+        }
+        public event PropertyChangedEventHandler? PropertyChanged;
         private ObservableCollection<Devise> lesDevises;
 
         public ObservableCollection<Devise> LesDevises
         {
             get { return lesDevises; }
-            set { lesDevises = value; }
+            set { lesDevises = value; OnPropertyChanged("LesDevises");}
         }
 
 
@@ -43,17 +60,36 @@ namespace ClientConvertisseurV1.Views
         {
             this.InitializeComponent();
             this.DataContext = this;
-            //GetDataOnLoadAsync();
+            GetDataOnLoadAsync();
 
         }
 
-        //private async void GetDataOnLoadAsync()
-        //{
-        //    WSService service = new WSService("http://localhost:7223/api/");
-        //    List<Devise> result = await service.GetDevisesAsync("devises");
-        //    Console.WriteLine(result);
-        //    LesDevises = new ObservableCollection<Devise>(result); 
+        private async void GetDataOnLoadAsync()
+        {
+            WSService service = new WSService("https://localhost:44338/api/");
+            List<Devise> result = await service.GetDevisesAsync("Devises");
+            LesDevises = new ObservableCollection<Devise>(result);
 
-        //}
+        }
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
+        private void ConvertirButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Result = int.Parse(BindMontant.Text) * LesDevises[ComboDevises.SelectedIndex].Taux;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Erreur Wola");
+            }
+        }
     }
 }
