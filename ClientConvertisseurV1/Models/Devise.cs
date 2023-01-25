@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientConvertisseurV1.Models
 {
-    internal class Devise
+    public class Devise
     {
 		private int id;
 		private string? nomDevise;
