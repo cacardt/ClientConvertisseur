@@ -12,10 +12,12 @@ namespace ClientConvertisseurV1.Services
 {
     internal class WSService : IService
     {
-        HttpClient client;
+        private HttpClient client;
+
+
         public WSService(string uri)
         {
-            HttpClient client = new HttpClient();
+            client = new HttpClient();
             client.BaseAddress = new Uri(uri);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
@@ -30,7 +32,6 @@ namespace ClientConvertisseurV1.Services
             }
             catch (Exception)
             {
-
                 return null;
             }
         }

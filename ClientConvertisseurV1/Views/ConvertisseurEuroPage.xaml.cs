@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -28,21 +29,21 @@ namespace ClientConvertisseurV1.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ConvertisseurEuroPage : Page
+    public sealed partial class ConvertisseurEuroPage : Page, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
         private ObservableCollection<Devise> devises;
 
         public ObservableCollection<Devise> Devises
         {
             get { return devises; }
-            set { devises = value; }
+            set { devises = value; OnPropertyChanged("Devises"); }
         }
 
         public ConvertisseurEuroPage()
         {
             this.InitializeComponent();
             this.DataContext = this;
-            Console.WriteLine("la");
             GetDataOnLoadAsync();
         }
 
@@ -50,15 +51,23 @@ namespace ClientConvertisseurV1.Views
         {
             WSService service = new WSService("https://localhost:44340/api/");
             List<Devise> result = await service.GetDevisesAsync("Devises");
-            Console.WriteLine(result);
-            foreach (Devise dev in result)
-            {
-                Console.WriteLine(dev);
-            }
             /*if (result is null)
                 MessageAsync("API non disponible", "Erreur");
             else*/
             Devises = new ObservableCollection<Devise>(result);
+            foreach (Devise dev in Devises)
+            {
+                Console.WriteLine(dev);
+            }
+        }
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
         }
     }
 }
