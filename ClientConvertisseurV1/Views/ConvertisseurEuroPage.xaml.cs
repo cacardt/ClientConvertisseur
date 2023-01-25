@@ -77,7 +77,7 @@ namespace ClientConvertisseurV1.Views
             WSService service = new WSService("https://localhost:44340/api/");
             List<Devise> result = await service.GetDevisesAsync("Devises");
             if (result is null)
-                ShowAsync("L'api n'est actuellement pas disponible.");
+                ShowError("L'api n'est actuellement pas disponible.");
             else
                 Devises = new ObservableCollection<Devise>(result);
         }
@@ -94,21 +94,32 @@ namespace ClientConvertisseurV1.Views
         private void ConvertirButton_Click(object sender, RoutedEventArgs e)
         {
             if (ComboDevises.SelectedIndex == -1)
-                ShowAsync("Vous devez séléctionner une devise.");
-            else if (BindMontant.Text == "")
-                ShowAsync("Vous devez entrer un montant");
-
-            Resultat = int.Parse(BindMontant.Text)* Devises[ComboDevises.SelectedIndex].Taux;
+                ShowError("Vous devez séléctionner une devise.");
+            else if (BindMontant.Text == null)
+                ShowError("Vous devez entrer un montant");
+            else
+                Resultat = int.Parse(BindMontant.Text)* Devises[ComboDevises.SelectedIndex].Taux;
         }
 
-        private void ShowAsync(string err)
+        private async void ShowError(string err)
         {
             ContentDialog message = new ContentDialog
             {
                 Title = "Error",
                 Content = err,
-                CloseButtonText = "OK",
+                CloseButtonText = "OK"
             };
+            await message.ShowAsync();
+
+
+            /*ContentDialog noWifiDialog = new ContentDialog
+            {
+                Title = "No wifi connection",
+                Content = "Check your connection and try again.",
+                CloseButtonText = "Ok"
+            };
+
+            ContentDialogResult result = await noWifiDialog.ShowAsync();*/
         }
     }
 }
