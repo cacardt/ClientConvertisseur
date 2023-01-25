@@ -40,6 +40,31 @@ namespace ClientConvertisseurV1.Views
             set { devises = value; OnPropertyChanged("Devises"); }
         }
 
+        private Devise? selectedDevise;
+
+        public Devise? SelectedDevise
+        {
+            get { return selectedDevise; }
+            set { selectedDevise = value; OnPropertyChanged("SelectedDevise"); }
+        }
+
+
+        private int? montant;
+
+        public int? Montant
+        {
+            get { return montant; }
+            set { montant = value; OnPropertyChanged("Montant"); }
+        }
+        private double? resultat;
+
+        public double? Resultat
+        {
+            get { return resultat; }
+            set { resultat = value; OnPropertyChanged("Resultat"); }
+        }
+
+
         public ConvertisseurEuroPage()
         {
             this.InitializeComponent();
@@ -51,14 +76,10 @@ namespace ClientConvertisseurV1.Views
         {
             WSService service = new WSService("https://localhost:44340/api/");
             List<Devise> result = await service.GetDevisesAsync("Devises");
-            /*if (result is null)
-                MessageAsync("API non disponible", "Erreur");
-            else*/
-            Devises = new ObservableCollection<Devise>(result);
-            foreach (Devise dev in Devises)
-            {
-                Console.WriteLine(dev);
-            }
+            if (result is null)
+                ShowAsync("L'api n'est actuellement pas disponible.");
+            else
+                Devises = new ObservableCollection<Devise>(result);
         }
 
         protected void OnPropertyChanged(string name)
@@ -68,6 +89,26 @@ namespace ClientConvertisseurV1.Views
             {
                 handler(this, new PropertyChangedEventArgs(name));
             }
+        }
+
+        private void ConvertirButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ComboDevises.SelectedIndex == -1)
+                ShowAsync("Vous devez séléctionner une devise.");
+            else if (BindMontant.Text == "")
+                ShowAsync("Vous devez entrer un montant");
+
+            Resultat = int.Parse(BindMontant.Text)* Devises[ComboDevises.SelectedIndex].Taux;
+        }
+
+        private void ShowAsync(string err)
+        {
+            ContentDialog message = new ContentDialog
+            {
+                Title = "Error",
+                Content = err,
+                CloseButtonText = "OK",
+            };
         }
     }
 }
