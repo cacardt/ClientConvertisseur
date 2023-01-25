@@ -12,18 +12,17 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock Margin="700,100" Text="Coucou" />
-        <TextBlock Margin="200,200" Text="Ca va" />
-        <TextBlock Margin="400,400" Text="Wesh" />
+        <TextBlock HorizontalAlignment="Center" Text="Montant" />
+        <TextBlock Margin="700,200,650,500" Text="Devise" />
+        <TextBlock Margin="700,300,600,400" Text="Montant en devise" />
 
 
 
 
         <TextBox
             x:Name="MontantEuro"
-            Grid.Row="1"
             Width="120"
-            Margin="0,41,0,0"
+            Margin="650,150"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Text="{Binding Euro}"
@@ -33,28 +32,14 @@
 
         <ComboBox
             x:Name="devise"
-            Grid.Row="2"
             Width="120"
-            Margin="0,41,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            DisplayMemberPath="Nom"
-            ItemsSource="{Binding LesDevises}"
-            SelectedItem="{Binding DeviseSelected}" />
+            Margin="650,250" />
 
-        <Button />
+        <Button Margin="100,100,600,350" Content="Valider" />
 
 
 
-        <TextBox
-            x:Name="result_textBox"
-            Grid.Row="4"
-            Width="120"
-            Margin="0,41,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Text="{Binding Result}"
-            TextWrapping="Wrap" />
+        <TextBox Width="120" Margin="650,350,650,325" />
 
     </Grid>
 </Page>
