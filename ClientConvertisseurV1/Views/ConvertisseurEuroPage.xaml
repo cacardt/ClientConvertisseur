@@ -1,0 +1,60 @@
+<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
+
+<Page
+    x:Class="ClientConvertisseurV1.Views.ConvertisseurEuroPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:ClientConvertisseurV1.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Grid>
+        <TextBlock Margin="700,100" Text="Coucou" />
+        <TextBlock Margin="200,200" Text="Ca va" />
+        <TextBlock Margin="400,400" Text="Wesh" />
+
+
+
+
+        <TextBox
+            x:Name="MontantEuro"
+            Grid.Row="1"
+            Width="120"
+            Margin="0,41,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Text="{Binding Euro}"
+            TextWrapping="Wrap" />
+
+
+
+        <ComboBox
+            x:Name="devise"
+            Grid.Row="2"
+            Width="120"
+            Margin="0,41,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            DisplayMemberPath="Nom"
+            ItemsSource="{Binding LesDevises}"
+            SelectedItem="{Binding DeviseSelected}" />
+
+        <Button />
+
+
+
+        <TextBox
+            x:Name="result_textBox"
+            Grid.Row="4"
+            Width="120"
+            Margin="0,41,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Text="{Binding Result}"
+            TextWrapping="Wrap" />
+
+    </Grid>
+</Page>
