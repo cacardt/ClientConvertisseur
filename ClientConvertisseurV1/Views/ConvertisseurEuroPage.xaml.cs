@@ -95,7 +95,7 @@ namespace ClientConvertisseurV1.Views
         {
             if (ComboDevises.SelectedIndex == -1)
                 ShowError("Vous devez séléctionner une devise.");
-            else if (BindMontant.Text == null)
+            else if (BindMontant.Text == "")
                 ShowError("Vous devez entrer un montant");
             else
                 Resultat = int.Parse(BindMontant.Text)* Devises[ComboDevises.SelectedIndex].Taux;
@@ -109,17 +109,9 @@ namespace ClientConvertisseurV1.Views
                 Content = err,
                 CloseButtonText = "OK"
             };
+            message.XamlRoot = this.Content.XamlRoot;
             await message.ShowAsync();
 
-
-            /*ContentDialog noWifiDialog = new ContentDialog
-            {
-                Title = "No wifi connection",
-                Content = "Check your connection and try again.",
-                CloseButtonText = "Ok"
-            };
-
-            ContentDialogResult result = await noWifiDialog.ShowAsync();*/
         }
     }
 }
