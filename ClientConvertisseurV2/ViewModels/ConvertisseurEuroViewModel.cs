@@ -13,7 +13,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace ClientConvertisseurV2.ViewModels
 {
-    internal class ConvertisseurEuroViewModel : ObservableObject, INotifyPropertyChanged
+    public class ConvertisseurEuroViewModel : ObservableObject, INotifyPropertyChanged
     {
         public IRelayCommand BtnSetConversion { get; }
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -58,7 +58,7 @@ namespace ClientConvertisseurV2.ViewModels
         }
 
 
-        private async void GetDataOnLoadAsync()
+        public async void GetDataOnLoadAsync()
         {
             WSService service = new WSService("https://localhost:44340/api/");
             List<Devise> result = await service.GetDevisesAsync("Devises");
@@ -68,7 +68,7 @@ namespace ClientConvertisseurV2.ViewModels
             Devises = new ObservableCollection<Devise>(result);
         }
 
-        private void ActionSetConversion()
+        public void ActionSetConversion()
         {
             if (SelectedDevise is null)
                 ShowError("Vous devez séléctionner une devise.");
