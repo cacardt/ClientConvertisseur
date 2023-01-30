@@ -70,7 +70,23 @@ namespace ClientConvertisseurV2.ViewModels
 
         private void ActionSetConversion()
         {
-            Resultat = Montant * SelectedDevise.Taux;
+            if (SelectedDevise is null)
+                ShowError("Vous devez séléctionner une devise.");
+            else if (Montant == 0)
+                ShowError("Vous devez entrer un montant");
+            else
+                Resultat = Montant * SelectedDevise.Taux;
+        }
+        private void ShowError(String message)
+        {
+            ContentDialog err = new()
+            {
+                Title = "Error",
+                Content = message,
+                CloseButtonText = "Ok"
+            };
+            err.XamlRoot = App.MainRoot.XamlRoot;
+            err.ShowAsync();
         }
 
         protected void OnPropertyChanged(string name)
